@@ -12,6 +12,9 @@ class Discount(models.Model):
     expiry_date = models.DateField(blank=True, null=True)
     percentage = models.IntegerField(blank=True, null=True)
 
+    def __str__(self) -> str:
+        return self.code
+
     
 
 class Order(models.Model):
@@ -21,13 +24,18 @@ class Order(models.Model):
     date = models.DateField(help_text='the time when the order was set first', blank=True, null=True)
     discount_code = models.ForeignKey(Discount, on_delete = models.PROTECT, blank=True, null=True)
     bill = models.FloatField(blank=True, null=True)
+    code = models.CharField(max_length=10, )
 
+    def __str__(self) -> str:
+        return f'{self.buyer}, {self.seller}, {self.code}'
 class Order_item(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, help_text = 'this item is related to which order', blank=True, null=True)
     product = models.ForeignKey(Product, on_delete= models.CASCADE, help_text='this product', blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
     num = models.IntegerField(blank= True, null=True)
 
+    def __str__(self) -> str:
+        return f'{self.order}, {self.product}'
 
 
     

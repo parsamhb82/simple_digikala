@@ -31,3 +31,6 @@ class Comment(models.Model):
 class Rate(models.Model):
     rating = models.FloatField(null=True, blank=True)
     rater = models.ForeignKey(Costumer, on_delete=models.CASCADE, null=True, blank=True)
+    
+    def __str__(self) -> str:
+        return f"{self.rating}, {self.rater}"
