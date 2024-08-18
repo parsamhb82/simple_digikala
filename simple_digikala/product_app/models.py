@@ -24,6 +24,7 @@ class Category(models.Model):
 class Comment(models.Model):
     comment_text = models.TextField(verbose_name='comment', null=True, blank=True)
     buyer = models.ForeignKey(Costumer, on_delete=models.CASCADE, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null= True, blank=True)
 
     def __str__(self) -> str:
         return self.comment_text
@@ -31,6 +32,7 @@ class Comment(models.Model):
 class Rate(models.Model):
     rating = models.FloatField(null=True, blank=True)
     rater = models.ForeignKey(Costumer, on_delete=models.CASCADE, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=True, blank=True)
     
     def __str__(self) -> str:
         return f"{self.rating}, {self.rater}"

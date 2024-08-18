@@ -16,7 +16,6 @@ class Productadmin(ModelAdmin):
 class Categoryadmin(ModelAdmin):
     list_display = [
         'name',
-        'code'
     ]
     search_fields = [
         'name'

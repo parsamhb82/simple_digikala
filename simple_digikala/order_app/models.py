@@ -7,7 +7,7 @@ from cart_app.models import Cart
 
 class Discount(models.Model):
     active = models.BooleanField(default=True, blank=True, null=True)
-    buyer = models.ForeignKey(Costumer, blank=True, null=True)
+    buyer = models.ForeignKey(Costumer, on_delete=models.PROTECT, blank=True, null=True)
     code = models.CharField(max_length=10, help_text='code shouldnt be more than 10 characters', blank=True, null=True)
     initiated_date = models.DateField(blank=True, null=True)
     expiry_date = models.DateField(blank=True, null=True)

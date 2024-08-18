@@ -2,7 +2,7 @@ from django.db import models
 from product_app.models import Product
 from accounts.models import Costumer, Seller
 
-class Cart(models):
+class Cart(models.Model):
     buyer = models.ForeignKey(Costumer, on_delete = models.CASCADE,blank=True, null=True)
     seller = models.ForeignKey(Seller, on_delete= models.CASCADE,blank=True, null=True)
     code = models.CharField(max_length=10, blank=True, null=True)
@@ -13,7 +13,7 @@ class Cart(models):
     def __str__(self) -> str:
         return f'{self.buyer}, {self.seller}, {self.code}'
     
-class Cart_item(models):
+class Cart_item(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete= models.CASCADE, help_text='this product', blank=True, null=True)
     price = models.FloatField(blank=True, null=True)
