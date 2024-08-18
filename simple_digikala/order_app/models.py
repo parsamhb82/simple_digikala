@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import Costumer, Seller
 from product_app.models import Product
+from cart_app.models import Cart
 
 
 
@@ -24,7 +25,9 @@ class Order(models.Model):
     date = models.DateField(help_text='the time when the order was set first', blank=True, null=True)
     discount_code = models.ForeignKey(Discount, on_delete = models.PROTECT, blank=True, null=True)
     bill = models.FloatField(blank=True, null=True)
-    code = models.CharField(max_length=10, )
+    code = models.CharField(max_length=10, blank=True, null=True)
+    cart = models.ForeignKey(Cart, on_delete=models.PROTECT, blank=True, null=True)
+    
 
     def __str__(self) -> str:
         return f'{self.buyer}, {self.seller}, {self.code}'

@@ -1,9 +1,8 @@
 from django.contrib.admin import register, ModelAdmin
+from cart_app.models import Cart, Cart_item
 
-from order_app.models import Order, Order_item
-
-@register(Order)
-class Orderadmin(ModelAdmin):
+@register(Cart)
+class CartAdmin(ModelAdmin):
     list_display = [
         'buyer',
         'seller',
@@ -11,18 +10,16 @@ class Orderadmin(ModelAdmin):
     ]
     search_fields = [
         'buyer',
-        'seller',
-        'code'
+        'seller'
     ]
-
-@register(Order_item)
-class Order_itemadmin(ModelAdmin):
+@register(Cart_item)
+class Cart_timeadmin(ModelAdmin):
     list_display = [
-        'order',
+        'cart',
         'product',
         'num'
     ]
     search_fields = [
-        'order',
+        'cart',
         'product'
     ]
