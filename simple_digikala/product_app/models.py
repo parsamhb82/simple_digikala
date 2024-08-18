@@ -8,7 +8,12 @@ class Product(models.Model):
     code = models.CharField(max_length = 10, verbose_name = 'product_code', help_text = 'each product code should be unique', null=True, blank=True)
     price = models.FloatField(verbose_name = 'product_price', null=True, blank=True)
     stock = models.IntegerField(verbose_name = 'product_stock', help_text = 'products stock should be a natural number', null=True, blank=True)
-    category = models.ForeignKey('category', on_delete = models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey('Category', on_delete = models.CASCADE, null=True, blank=True)
+
+
+    def total_rate(self):
+        return (sum(item.get_rate() for item in self.frate.all() ))
+
 
     def __str__(self) -> str:
         return self.name
@@ -31,9 +36,13 @@ class Comment(models.Model):
         return self.comment_text
 
 class Rate(models.Model):
-    rating = models.FloatField(null=True, blank=True)
+    rating = models.IntegerField(null=True, blank=True)
     rater = models.ForeignKey(Costumer, on_delete=models.CASCADE, null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,null=True, blank=True,related_name='frate')
+
+
+    def get_rate(self):
+        return self.rating
     
     def __str__(self) -> str:
         return f"{self.rating}, {self.rater}"
