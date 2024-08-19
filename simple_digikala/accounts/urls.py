@@ -7,5 +7,5 @@ urlpatterns = [
     path('costumers/<str:input_name>', find_costumers_by_name),
     path('sellers/<str:input_name>', find_sellers_by_name),
     path('costumers/find_costumers_by_username/<str:input_username>', find_costumers_by_username),
-    path('sellers/find_costumers_by_username/<str:input_username>', find_sellers_by_username)
+    path('sellers/find_sellers_by_username/<str:input_username>', find_sellers_by_username)
 ]
