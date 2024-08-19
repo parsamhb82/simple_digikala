@@ -5,21 +5,21 @@ from cart_app.models import Cart, Cart_item
 class CartAdmin(ModelAdmin):
     list_display = [
         'buyer',
-        'seller',
         'code'
     ]
     search_fields = [
         'buyer',
-        'seller'
     ]
 @register(Cart_item)
 class Cart_timeadmin(ModelAdmin):
     list_display = [
         'cart',
+        'seller',
         'product',
         'num'
     ]
     search_fields = [
         'cart',
+        'seller',
         'product'
     ]
