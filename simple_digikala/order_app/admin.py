@@ -6,12 +6,10 @@ from order_app.models import Order, Order_item
 class Orderadmin(ModelAdmin):
     list_display = [
         'buyer',
-        'seller',
         'code'
     ]
     search_fields = [
         'buyer',
-        'seller',
         'code'
     ]
 
@@ -19,10 +17,12 @@ class Orderadmin(ModelAdmin):
 class Order_itemadmin(ModelAdmin):
     list_display = [
         'order',
+        'seller',
         'product',
         'num'
     ]
     search_fields = [
         'order',
+        'seller',
         'product'
     ]

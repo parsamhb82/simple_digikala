@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 
 def list_product(request):
     products = Product.objects.all()
-    my_ticket_list = []
+    my_product_list = []
     for item in products:
             ticket_dictionary = {
                 "name": item.name,
@@ -14,12 +14,12 @@ def list_product(request):
                 "seller": item.seller.username,
                 "stock": item.stock,
             }
-            my_ticket_list.append(ticket_dictionary)
-    return JsonResponse(my_ticket_list, safe=False)
+            my_product_list.append(ticket_dictionary)
+    return JsonResponse(my_product_list, safe=False)
 
 def category(request,category):
     products = Product.objects.filter(category__name=category)
-    my_ticket_list = []
+    my_product_list = []
     if products.exists():
         for item in products:
             ticket_dictionary = {
@@ -29,8 +29,8 @@ def category(request,category):
                 "seller": item.seller.username,
                 "stock": item.stock,
                 }
-            my_ticket_list.append(ticket_dictionary)
-    return JsonResponse(my_ticket_list, safe=False)
+            my_product_list.append(ticket_dictionary)
+    return JsonResponse(my_product_list, safe=False)
 
 
 
@@ -67,7 +67,7 @@ def buy(request, name):
 
 def seller(request,name):
     products = Product.objects.filter(seller__username=name)
-    my_ticket_list = []
+    my_product_list = []
     if products.exists():
         for item in products:
             ticket_dictionary = {
@@ -75,8 +75,8 @@ def seller(request,name):
                 "source": item.price,
                 "destination": item.description
             }
-            my_ticket_list.append(ticket_dictionary)
-    return JsonResponse(my_ticket_list, safe=False)
+            my_product_list.append(ticket_dictionary)
+    return JsonResponse(my_product_list, safe=False)
 
 
 
