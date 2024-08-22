@@ -1,20 +1,12 @@
 from django.contrib.admin import register, ModelAdmin
-
+from django.contrib import admin
 from order_app.models import Order, Order_item
 
-@register(Order)
-class Orderadmin(ModelAdmin):
-    list_display = [
-        'buyer',
-        'code'
-    ]
-    search_fields = [
-        'buyer',
-        'code'
-    ]
 
-@register(Order_item)
-class Order_itemadmin(ModelAdmin):
+
+class Order_itemadmin(admin.StackedInline):
+    model = Order_item
+
     list_display = [
         'order',
         'seller',
@@ -26,3 +18,20 @@ class Order_itemadmin(ModelAdmin):
         'seller',
         'product'
     ]
+
+
+@register(Order)
+class Orderadmin(ModelAdmin):
+    list_display = [
+        'buyer',
+        'code',
+        'total_price'
+
+
+    ]
+    search_fields = [
+        'buyer',
+        'code'
+    ]
+
+    inlines = (Order_itemadmin,)
