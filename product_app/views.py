@@ -1,6 +1,8 @@
 from django.http.response import JsonResponse
-from .models import Product,Rate,Comment
+from .models import Product,Rate,Comment, Category
 from django.shortcuts import get_object_or_404
+import json
+from accounts.models import Seller, Costumer
 
 
 def list_product(request):
@@ -79,7 +81,92 @@ def seller(request,name):
     return JsonResponse(my_product_list, safe=False)
 
 
+def add_product(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            name = data['name']
+            description = data['description']
+            seller_id = data['seller_id']
+            code = data['code']
+            price = data['price']
+            stock = data['stock']
+            category_id = data['category_id']
+
+            if Product.objects.filter(code=code).exists():
+                return JsonResponse({"message": "Product code already exists"}, status=400)
+
+            seller = Seller.objects.get(id=seller_id)
+            category = Category.objects.get(id=category_id)
+
+            new_product = Product.objects.create(
+                name=name,
+                description=description,
+                seller=seller,
+                code=code,
+                price=price,
+                stock=stock,
+                category=category
+            )
+            new_product.save()
+            return JsonResponse({"message": "Product added successfully"})
+        except Seller.DoesNotExist:
+            return JsonResponse({'error': 'Seller not found'})
+        except Category.DoesNotExist:
+            return JsonResponse({'error': 'Category not found'})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
 
 
+def add_comment(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            comment_text = data['comment_text']
+            buyer_id = data['buyer_id']
+            product_id = data['product_id']
+            buyer = Costumer.objects.get(id = buyer_id)
+            product = Product.objects.get(id = product_id)
+            new_comment = Comment.objects.create(
+                comment_text= comment_text,
+                buyer= buyer,
+                product = product)
+            new_comment.save()
+            return JsonResponse({"message": "Comment added successfully"})
+        except Costumer.DoesNotExist:
+            return JsonResponse({'error': 'Buyer not found'})
+        except Product.DoesNotExist:
+            return JsonResponse({'error': 'Product not found'})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+def add_rate(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            rating = data['rating']
+            rater_id = data['rater_id']
+            product_id = data['product_id']
 
-
+            if rating is None or not (1 <= rating <= 5):
+                return JsonResponse({'error': 'Rating must be between 1 and 5'})
+            rater = Costumer.objects.get(id=rater_id)
+            product = Product.objects.get(id=product_id)
+            new_rate = Rate.objects.create(
+                rating=rating,
+                rater=rater,
+                product=product
+            )
+            new_rate.save()
+            return JsonResponse({"message": "Rating added successfully"})
+        except Costumer.DoesNotExist:
+            return JsonResponse({'error': 'Rater not found'})
+        except Product.DoesNotExist:
+            return JsonResponse({'error': 'Product not found'})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})

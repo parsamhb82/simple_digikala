@@ -1,5 +1,6 @@
 from django.http.response import JsonResponse
 from accounts.models import Costumer, Seller
+import json
 
 def costumers_list_func(request):
     costumers = Costumer.objects.all()
@@ -78,6 +79,64 @@ def find_sellers_by_username(request, input_username):
         return JsonResponse({'error' : 'seller not found'}, status=404)
 
 
+def add_seller(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            name = data['name']
+            email = data['email']
+            city = data['city']
+            address = data['address']
+            password = data['password']
+            username = data['username']
+            
+            if Seller.objects.filter(email = email).exists():
+                return JsonResponse({"message": "Email already exists"})
+            elif Seller.objects.filter(username = username).exists():
+                return JsonResponse({"message": "Username already exists"})
+            else:
+                new_seller = Seller.objects.create(name= name , 
+                                      username=username, 
+                                      password=password,
+                                      city=city,
+                                      address=address,
+                                      email=email)
+                new_seller.save()
+                return JsonResponse({"message": "Seller added successfully"})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+            
 
+def add_costumer(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            name = data['name']
+            email = data['email']
+            city = data['city']
+            address = data['address']
+            password = data['password']
+            username = data['username']
+            
+            if Costumer.objects.filter(email = email).exists():
+                return JsonResponse({"message": "Email already exists"})
+            elif Costumer.objects.filter(username = username).exists():
+                return JsonResponse({"message": "Username already exists"})
+            else:
+                new_costumer = Costumer.objects.create(name= name , 
+                                      username=username, 
+                                      password=password,
+                                      city=city,
+                                      address=address,
+                                      email=email)
+                new_costumer.save()
+                return JsonResponse({"message": "Costumer added successfully"})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+    
 
     
