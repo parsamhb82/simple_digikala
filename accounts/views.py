@@ -1,6 +1,7 @@
 from django.http.response import JsonResponse
 from accounts.models import Costumer, Seller
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 def costumers_list_func(request):
     costumers = Costumer.objects.all()
@@ -78,7 +79,7 @@ def find_sellers_by_username(request, input_username):
     except Seller.DoesNotExist:
         return JsonResponse({'error' : 'seller not found'}, status=404)
 
-
+@csrf_exempt
 def add_seller(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -108,7 +109,7 @@ def add_seller(request):
     else:
         return JsonResponse({'error': 'Invalid request method'})
             
-
+@csrf_exempt
 def add_costumer(request):
     if request.method == 'POST':
         data = json.loads(request.body)

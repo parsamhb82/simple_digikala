@@ -3,7 +3,7 @@ from .models import Product,Rate,Comment, Category
 from django.shortcuts import get_object_or_404
 import json
 from accounts.models import Seller, Costumer
-
+from django.views.decorators.csrf import csrf_exempt
 
 def list_product(request):
     products = Product.objects.all()
@@ -80,7 +80,7 @@ def seller(request,name):
             my_product_list.append(ticket_dictionary)
     return JsonResponse(my_product_list, safe=False)
 
-
+@csrf_exempt
 def add_product(request):
     if request.method == 'POST':
         try:
@@ -119,7 +119,7 @@ def add_product(request):
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
-
+@csrf_exempt
 def add_comment(request):
     if request.method == 'POST':
         try:
@@ -143,6 +143,8 @@ def add_comment(request):
             return JsonResponse({'error': str(e)})
     else:
         return JsonResponse({'error': 'Invalid request method'})
+    
+@csrf_exempt
 def add_rate(request):
     if request.method == 'POST':
         try:
